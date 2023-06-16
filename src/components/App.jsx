@@ -70,7 +70,7 @@ export default function App() {
           setEndTotalHits(false);
         }
       } catch (err) {
-        console.error(err);
+        console.error('ошибка от API...', err);
       } finally {
         setLoading(false);
       }
