@@ -58,7 +58,9 @@ export default function App() {
         }
 
         setImages(prevImages => [...prevImages, ...data.hits]);
-        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images`);
+
+        if (page === 1)
+          Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images`);
 
         if (data.totalHits <= page * pixabayAPI.perPage) {
           setEndTotalHits(true);
