@@ -22,7 +22,6 @@ export default function App() {
         `You are currently viewing this query "${searchQuery}", try another query`
       );
     }
-
     setImages([]);
     setSearchQuery(value);
     setPage(1);
