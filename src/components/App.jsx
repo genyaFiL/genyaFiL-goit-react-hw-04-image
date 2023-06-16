@@ -16,42 +16,6 @@ export default function App() {
   const [endTotalHits, setEndTotalHits] = useState(false);
   const [page, setPage] = useState(1);
 
-  const searchPhotos = async () => {
-    setLoading(true);
-    try {
-      if (!pixabayAPI.q) {
-        Notiflix.Notify.warning(
-          `The field cannot be empty. Please enter a search query`
-        );
-        return;
-      }
-
-      const { data } = await pixabayAPI.fetchPhotos(page);
-
-      if (!data.hits.length) {
-        Notiflix.Notify.failure(
-          `Sorry, there are no images matching your search query. Please try again.`
-        );
-        return;
-      }
-
-      setImages(prevImages => [...prevImages, ...data.hits]);
-      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images`);
-
-      if (data.totalHits <= page * pixabayAPI.perPage) {
-        setEndTotalHits(true);
-        Notiflix.Notify.info(
-          "We're sorry, but you've reached the end of search results."
-        );
-      } else {
-        setEndTotalHits(false);
-      }
-    } catch (err) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onSubmit = value => {
     if (value === searchQuery) {
       return Notiflix.Notify.info(
@@ -70,6 +34,42 @@ export default function App() {
 
   useEffect(() => {
     pixabayAPI.q = searchQuery.trim();
+    const searchPhotos = async () => {
+      setLoading(true);
+      try {
+        if (!pixabayAPI.q) {
+          Notiflix.Notify.warning(
+            `The field cannot be empty. Please enter a search query`
+          );
+          return;
+        }
+
+        const { data } = await pixabayAPI.fetchPhotos(page);
+
+        if (!data.hits.length) {
+          Notiflix.Notify.failure(
+            `Sorry, there are no images matching your search query. Please try again.`
+          );
+          return;
+        }
+
+        setImages(prevImages => [...prevImages, ...data.hits]);
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images`);
+
+        if (data.totalHits <= page * pixabayAPI.perPage) {
+          setEndTotalHits(true);
+          Notiflix.Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+        } else {
+          setEndTotalHits(false);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
     searchPhotos();
   }, [searchQuery, page]);
 
