@@ -33,9 +33,13 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (!searchQuery) {
+      return;
+    }
     pixabayAPI.q = searchQuery.trim();
     const searchPhotos = async () => {
       setLoading(true);
+      console.log(pixabayAPI.q);
       try {
         if (!pixabayAPI.q) {
           Notiflix.Notify.warning(
